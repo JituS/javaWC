@@ -37,6 +37,7 @@ public class WCTest {
     @Test
     public void should_give_1_if_there_is_only_one_word() {
         WC text = new WC("hello");
+
         assertEquals(1, text.countLines());
     }
     @Test
