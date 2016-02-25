@@ -51,5 +51,8 @@ public class WC {
         reader.read(data, 0, length);
         String str = new String(data);
         WC wc = new WC(file, str);
+        System.out.println(wc.countChars());
+        System.out.println(wc.countWords());
+        System.out.println(wc.countLines());
     }
 }
