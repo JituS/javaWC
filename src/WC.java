@@ -36,7 +36,9 @@ public class WC {
         int count = 0;
         while (m.find()) {
             ++count;
+
         }
+
         return count;
     }
 
