@@ -11,7 +11,6 @@ import java.util.Arrays;
 public class WC {
     String text;
     File fileName;
-    int charLength;
 
     public WC(String fileText) {
         this.text = fileText;
@@ -19,7 +18,7 @@ public class WC {
 
     public WC(File fileName, String fileText) {
         this.text = fileText;
-        this.fileName =fileName;
+        this.fileName = fileName;
     }
 
     public int countLines() {
@@ -27,11 +26,13 @@ public class WC {
         Pattern p = Pattern.compile(pattern);
         return p.split(this.text).length;
     }
+
     public int countChars() {
         String pattern = "";
         Pattern p = Pattern.compile(pattern);
         return p.split(this.text).length;
     }
+
     public int countWords() {
         String pattern = "[\\S]+";
         Pattern p = Pattern.compile(pattern);
@@ -43,16 +44,25 @@ public class WC {
         return count;
     }
 
-    public static void main(String[] args) throws IOException {
-        File file = new File(args[0]);
+
+    private static void printOptions(File file)  throws IOException {
         int length = (int) file.length();
         FileReader reader = new FileReader(file);
         char[] data = new char[length];
         reader.read(data, 0, length);
         String str = new String(data);
         WC wc = new WC(file, str);
-        System.out.println(wc.countChars());
-        System.out.println(wc.countWords());
-        System.out.println(wc.countLines());
+        System.out.println(wc.countLines() + "\t" + wc.countWords() + "\t" + wc.countChars() + "\t" + file);
+    }
+
+    public static void main(String[] args) throws IOException {
+        for (String fileName : args) {
+            try {
+                File file = new File(fileName);
+                printOptions(file);
+            }catch (IOException e){
+                System.out.println(fileName + " file not found");
+            }
+        }
     }
 }
