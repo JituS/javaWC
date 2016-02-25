@@ -10,17 +10,16 @@ import java.util.Arrays;
 
 public class WC {
     String text;
-    String fileName;
+    File fileName;
     int charLength;
 
     public WC(String fileText) {
         this.text = fileText;
     }
 
-    public WC(String fileName, String fileText, int length) {
+    public WC(File fileName, String fileText) {
         this.text = fileText;
-        this.charLength = length;
-        this.fileName = fileName;
+        this.fileName =fileName;
     }
 
     public int countLines() {
@@ -28,7 +27,11 @@ public class WC {
         Pattern p = Pattern.compile(pattern);
         return p.split(this.text).length;
     }
-
+    public int countChars() {
+        String pattern = "";
+        Pattern p = Pattern.compile(pattern);
+        return p.split(this.text).length;
+    }
     public int countWords() {
         String pattern = "[\\S]+";
         Pattern p = Pattern.compile(pattern);
@@ -36,9 +39,7 @@ public class WC {
         int count = 0;
         while (m.find()) {
             ++count;
-
         }
-
         return count;
     }
 
@@ -49,6 +50,6 @@ public class WC {
         char[] data = new char[length];
         reader.read(data, 0, length);
         String str = new String(data);
-        WC wc = new WC(args[0], str, length);
+        WC wc = new WC(file, str);
     }
 }

@@ -39,4 +39,19 @@ public class WCTest {
         WC text = new WC("hello");
         assertEquals(1, text.countLines());
     }
+    @Test
+    public void should_give_th_count_of_characters() {
+        WC text = new WC("hello");
+        assertEquals(5, text.countChars());
+    }
+    @Test
+    public void should_give_th_count_of_characters_if_they_are_number() {
+        WC text = new WC("12345");
+        assertEquals(5, text.countChars());
+    }
+    @Test
+    public void should_give_th_count_of_characters_if_they_are_number_and_chars() {
+        WC text = new WC("12345abcdEFGH");
+        assertEquals(13, text.countChars());
+    }
 }
