@@ -1,65 +1,67 @@
-import java.util.regex.Pattern;
-import java.util.regex.Matcher;
 import java.io.FileReader;
 import java.io.File;
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Arrays;
 
-public class WC {
-    String text;
-    File fileName;
+public class WC{
+    List<Scanner> scanners;
+    String summary;
 
-    public WC(String fileText) {
-        this.text = fileText;
+    public WC() {
+        scanners = new ArrayList<Scanner>();
+        summary = "";
     }
 
-    public WC(File fileName, String fileText) {
-        this.text = fileText;
-        this.fileName = fileName;
-    }
-
-    public int countLines() {
-        String pattern = "\n";
-        Pattern p = Pattern.compile(pattern);
-        return p.split(this.text).length;
-    }
-
-    public int countChars() {
-        String pattern = "";
-        Pattern p = Pattern.compile(pattern);
-        return p.split(this.text).length;
-    }
-
-    public int countWords() {
-        String pattern = "[\\S]+";
-        Pattern p = Pattern.compile(pattern);
-        Matcher m = p.matcher(this.text);
-        int count = 0;
-        while (m.find()) {
-            ++count;
+    public void count(String options){
+        for (int i = 0;i < options.length(); i++){
+            addScanner(options.charAt(i));
         }
-        return count;
     }
 
+    public void addScanner(char option) {
+        if(option == 'l'){
+            scanners.add(new LineCount());
+        }
+        if(option == 'w'){
+            scanners.add(new WordCount());
+        }
+        if(option == 'c'){
+            scanners.add(new CharCount());
+        }
+    }
 
-    private static void printOptions(File file)  throws IOException {
+    public void add(char a) {
+        for(Scanner scanner : scanners) {
+            scanner.scan(a);
+        }
+    }
+
+    public String summary(String saprator) {
+        for (Scanner scanner: scanners){
+            summary += scanner.getCount() + saprator;
+        }
+        return summary.substring(0, summary.length()-1);
+    }
+
+    private static void printOptions(String options, File file)  throws IOException {
         int length = (int) file.length();
         FileReader reader = new FileReader(file);
         char[] data = new char[length];
         reader.read(data, 0, length);
-        String str = new String(data);
-        WC wc = new WC(file, str);
-        System.out.println(wc.countLines() + "\t" + wc.countWords() + "\t" + wc.countChars() + "\t" + file);
+        WC wc = new WC();
+        wc.count(options);
+        for (char c : data) {
+            wc.add(c);
+        }
+        System.out.println(wc.summary("\t"));
     }
 
     public static void main(String[] args) throws IOException {
         for (String fileName : args) {
             try {
                 File file = new File(fileName);
-                printOptions(file);
+                printOptions(args[0], file);
             }catch (IOException e){
                 System.out.println(fileName + " file not found");
             }
